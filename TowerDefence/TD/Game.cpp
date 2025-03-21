@@ -1,5 +1,8 @@
 #include "pch.h"
 #include "Game.h"
+#include "Texture.h"
+#include "utils.h"
+
 
 Game::Game( const Window& window ) 
 	:BaseGame{ window }
@@ -14,7 +17,14 @@ Game::~Game( )
 
 void Game::Initialize( )
 {
-	
+	m_Map = new Texture("Map.png");
+
+
+	for (int i{ 0 }; i < m_Waypoints.size(); i++)
+	{
+		m_WaypointsTop.push_back(m_Waypoints[i]);
+		m_WaypointsTop[i].y += 20;
+	}
 }
 
 void Game::Cleanup( )
@@ -38,6 +48,20 @@ void Game::Update( float elapsedSec )
 void Game::Draw( ) const
 {
 	ClearBackground( );
+
+	m_Map->Draw(Rectf(0, 0, GetViewPort().width, GetViewPort().height));
+
+	for (int i{ 1 }; i < m_Waypoints.size(); i++)
+	{
+		utils::DrawLine(m_Waypoints[i-1], m_Waypoints[i]);
+	}
+
+	for (int i{ 1 }; i < m_Waypoints.size(); i++)
+	{
+		utils::DrawLine(m_WaypointsTop[i - 1], m_WaypointsTop[i]);
+	}
+
+	utils::FillRect(m_TestTower);
 }
 
 void Game::ProcessKeyDownEvent( const SDL_KeyboardEvent & e )

@@ -2,6 +2,8 @@
 #include "BaseGame.h"
 #include "vector"
 
+class Texture;
+
 class Game : public BaseGame
 {
 public:
@@ -34,5 +36,27 @@ private:
 
 	//MEMBERS
 
-	std::vector<Vector2f> m_Waypoints;
+	Texture* m_Map;
+
+	std::vector<Vector2f> m_Waypoints
+	{
+		Vector2f(GetViewPort().width, GetViewPort().height - 175),
+		Vector2f(GetViewPort().width - 150, GetViewPort().height - 175),
+		Vector2f(GetViewPort().width - 150, GetViewPort().height - 75),
+		Vector2f(GetViewPort().width - 275, GetViewPort().height - 75),
+		Vector2f(GetViewPort().width - 275, GetViewPort().height - 175),
+		Vector2f(150, GetViewPort().height - 175),
+		Vector2f(150, 225),
+		Vector2f(400, 225),
+		Vector2f(400, 125),
+		Vector2f(275, 125),
+		Vector2f(275, 0)
+	};
+
+	std::vector<Vector2f> m_WaypointsTop;
+
+	Rectf m_TestTower
+	{
+		275, 170, 40, 40
+	};
 };
