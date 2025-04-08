@@ -5,6 +5,7 @@
 #include "Enemy.h"
 #include "Path.h"
 #include "Tower.h"
+#include "iostream"
 
 
 Game::Game( const Window& window ) 
@@ -55,6 +56,33 @@ void Game::Update( float elapsedSec )
 		{
 			m_CurrentWaypoint = (m_CurrentWaypoint + 1) % m_Waypoints.size();
 		}
+	}
+
+	if (m_Enemy->IsDead())
+	{
+		m_Enemy = nullptr;
+	}
+
+	for (int i{ 0 }; i < m_Towers.size(); i++)
+	{
+		if (m_Towers.at(i)->IsActive())
+		{
+			if (m_Enemy != nullptr)
+			{
+				if (m_Enemy->IsInRange(m_Towers.at(i)->GetRange()))
+				{
+					m_Towers.at(i)->SetShooting(m_Enemy);
+				}
+				else
+				{
+					std::cout << "active" << "\n";
+					m_Towers.at(i)->SetActive();
+				}
+			}
+			
+		}
+
+		m_Towers.at(i)->Update(elapsedSec);
 	}
 }
 
@@ -153,7 +181,7 @@ void Game::InitPath()
 
 void Game::InitEnemies()
 {
-	m_Enemy = new Enemy(m_StartPos, 10, m_Speed);
+	m_Enemy = new Enemy(m_StartPos, 10, m_Speed, 20);
 }
 
 void Game::InitTower()

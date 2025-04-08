@@ -3,7 +3,7 @@ class Enemy
 {
 public:
 
-	Enemy(const Vector2f& position, int size, float speed);
+	Enemy(const Vector2f& position, int size, float speed, int lifePoints);
 	~Enemy();
 
 	void Draw() const;
@@ -13,11 +13,22 @@ public:
 
 	float GetDistance();
 
+	bool IsInRange(Rectf towerRange);
+
+	Vector2f GetPosition();
+
+	void IsHit(int damage);
+
+	bool IsDead();
+
 private:
 
 	Vector2f m_Position;
 	Vector2f m_NextPosition;
 	int m_Size;
 	float m_Speed;
+
+	int m_MaxLifePoints;
+	int m_LifePoints;
 };
 

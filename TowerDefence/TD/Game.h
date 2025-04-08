@@ -41,6 +41,8 @@ private:
 
 	//MEMBERS
 
+	float m_ShootTimer{ 0 };
+
 	Vector2f m_StartPos{ GetViewPort().width + 20, 325 };
 
 	std::vector<Vector2f> m_Waypoints
