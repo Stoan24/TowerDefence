@@ -3,6 +3,9 @@
 #include "vector"
 
 class Texture;
+class Path;
+class Enemy;
+class Tower;
 
 class Game : public BaseGame
 {
@@ -32,31 +35,42 @@ private:
 	void Cleanup( );
 	void ClearBackground( ) const;
 
-	void InitWaypoints();
+	void InitPath();
+	void InitEnemies();
+	void InitTower();
 
 	//MEMBERS
 
-	Texture* m_Map;
+	Vector2f m_StartPos{ GetViewPort().width + 20, 325 };
 
 	std::vector<Vector2f> m_Waypoints
 	{
-		Vector2f(GetViewPort().width, GetViewPort().height - 175),
-		Vector2f(GetViewPort().width - 150, GetViewPort().height - 175),
-		Vector2f(GetViewPort().width - 150, GetViewPort().height - 75),
-		Vector2f(GetViewPort().width - 275, GetViewPort().height - 75),
-		Vector2f(GetViewPort().width - 275, GetViewPort().height - 175),
-		Vector2f(150, GetViewPort().height - 175),
+		Vector2f(m_StartPos),
+		Vector2f(450, 325),
+		Vector2f(450, 425),
+		Vector2f(350, 425),
+		Vector2f(350, 325),
+		Vector2f(150, 325),
 		Vector2f(150, 225),
 		Vector2f(400, 225),
 		Vector2f(400, 125),
-		Vector2f(275, 125),
-		Vector2f(275, 0)
+		Vector2f(300, 125),
+		Vector2f(300, -20)
 	};
 
-	std::vector<Vector2f> m_WaypointsTop;
-
-	Rectf m_TestTower
+	std::vector<Vector2f> m_TowerLocations
 	{
-		275, 170, 40, 40
+		Vector2f(400, 375),
+		Vector2f(200, 275),
+		Vector2f(350, 175)
+
 	};
+
+	std::vector<Tower*> m_Towers;
+
+	int m_CurrentWaypoint{ 1 };
+	float m_Speed{ 150.f };
+
+	Enemy* m_Enemy;
+	Path* m_Path;
 };

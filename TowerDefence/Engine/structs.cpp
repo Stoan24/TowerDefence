@@ -2,7 +2,8 @@
 #include "structs.h"
 
 //-----------------------------------------------------------------
-// Window Constructors
+// 
+// Constructors
 //-----------------------------------------------------------------
 Window::Window( const std::string& title , float width , float height , bool isVSyncOn )
 	:title{ title }

@@ -2,6 +2,9 @@
 #include "Game.h"
 #include "Texture.h"
 #include "utils.h"
+#include "Enemy.h"
+#include "Path.h"
+#include "Tower.h"
 
 
 Game::Game( const Window& window ) 
@@ -17,18 +20,16 @@ Game::~Game( )
 
 void Game::Initialize( )
 {
-	m_Map = new Texture("Map.png");
+	InitPath();
 
+	InitEnemies();
 
-	for (int i{ 0 }; i < m_Waypoints.size(); i++)
-	{
-		m_WaypointsTop.push_back(m_Waypoints[i]);
-		m_WaypointsTop[i].y += 20;
-	}
+	InitTower();
 }
 
 void Game::Cleanup( )
 {
+
 }
 
 void Game::Update( float elapsedSec )
@@ -43,25 +44,32 @@ void Game::Update( float elapsedSec )
 	//{
 	//	std::cout << "Left and up arrow keys are down\n";
 	//}
+	
+	
+	if (m_CurrentWaypoint != 0)
+	{
+		m_Enemy->Update(elapsedSec, m_Waypoints.at(m_CurrentWaypoint));
+
+		// look if the distance is small enough --> change waypoint
+		if (m_Enemy->GetDistance() < 0.01f)
+		{
+			m_CurrentWaypoint = (m_CurrentWaypoint + 1) % m_Waypoints.size();
+		}
+	}
 }
 
 void Game::Draw( ) const
 {
 	ClearBackground( );
 
-	m_Map->Draw(Rectf(0, 0, GetViewPort().width, GetViewPort().height));
+	m_Path->Draw();
 
-	for (int i{ 1 }; i < m_Waypoints.size(); i++)
+	m_Enemy->Draw();
+
+	for (int i{ 0 }; i < m_Towers.size(); i++)
 	{
-		utils::DrawLine(m_Waypoints[i-1], m_Waypoints[i]);
+		m_Towers.at(i)->Draw();
 	}
-
-	for (int i{ 1 }; i < m_Waypoints.size(); i++)
-	{
-		utils::DrawLine(m_WaypointsTop[i - 1], m_WaypointsTop[i]);
-	}
-
-	utils::FillRect(m_TestTower);
 }
 
 void Game::ProcessKeyDownEvent( const SDL_KeyboardEvent & e )
@@ -125,15 +133,33 @@ void Game::ProcessMouseUpEvent( const SDL_MouseButtonEvent& e )
 	//	std::cout << " middle button " << std::endl;
 	//	break;
 	//}
+
+	for (int i{ 0 }; i < m_Towers.size(); i++)
+	{
+		m_Towers.at(i)->Buy(Vector2f(e.x, e.y));
+	}
 }
 
 void Game::ClearBackground( ) const
 {
-	glClearColor( 0.0f, 0.0f, 0.3f, 1.0f );
+	glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
 	glClear( GL_COLOR_BUFFER_BIT );
 }
 
-void Game::InitWaypoints()
+void Game::InitPath()
 {
-	
+	m_Path = new Path(m_Waypoints);
+}
+
+void Game::InitEnemies()
+{
+	m_Enemy = new Enemy(m_StartPos, 10, m_Speed);
+}
+
+void Game::InitTower()
+{
+	for (int i{ 0 }; i < m_TowerLocations.size(); i++)
+	{
+		m_Towers.push_back(new Tower(m_TowerLocations.at(i)));
+	}
 }
