@@ -1,14 +1,16 @@
 #include "pch.h"
 #include "Enemy.h"
 #include "utils.h"
+#include "Path.h"
 
-Enemy::Enemy(const Vector2f& position, int size, float speed, int lifePoints)
+Enemy::Enemy(const Vector2f& position, int size, float speed, int lifePoints, Path* path)
 	:m_Position{ position }
 	, m_Size{ size }
 	, m_NextPosition{ }
 	, m_Speed{ speed }
 	, m_MaxLifePoints{ lifePoints }
-	,m_LifePoints{ lifePoints }
+	, m_LifePoints{ lifePoints }
+	, m_Path{ path }
 {
 
 }
@@ -45,14 +47,20 @@ void Enemy::Draw() const
 	
 }
 
-void Enemy::Update(float elapsedSec, const Vector2f& nextWaypoint)
-{
+void Enemy::Update(float elapsedSec)
+{	
+	m_NextPosition = m_Path->GetNextPosition(m_CurrentWaypoint);
 	
-	m_NextPosition = nextWaypoint;
-	if (m_Position.x == m_NextPosition.x)
+	if (m_CurrentWaypoint != 0)
 	{
 
+		// look if the distance is small enough --> change waypoint
+		if (GetDistance() < 0.01f)
+		{
+			m_CurrentWaypoint = (m_CurrentWaypoint + 1) % m_Path->GetSize();
+		}
 	}
+
 	Move(elapsedSec);
 }
 
@@ -87,7 +95,6 @@ float Enemy::GetDistance()
 
 bool Enemy::IsInRange(Rectf towerRange)
 {
-
 	return utils::IsPointInRect(m_Position, towerRange);
 }
 

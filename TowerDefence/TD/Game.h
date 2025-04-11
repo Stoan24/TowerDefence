@@ -41,13 +41,13 @@ private:
 
 	//MEMBERS
 
-	float m_ShootTimer{ 0 };
+	// ------level 1 positions------
 
-	Vector2f m_StartPos{ GetViewPort().width + 20, 325 };
+	Vector2f m_FirstStartPos{ GetViewPort().width + 50, 325 };
 
 	std::vector<Vector2f> m_Waypoints
 	{
-		Vector2f(m_StartPos),
+		Vector2f(m_FirstStartPos),
 		Vector2f(450, 325),
 		Vector2f(450, 425),
 		Vector2f(350, 425),
@@ -68,11 +68,33 @@ private:
 
 	};
 
+	std::vector<Vector2f> m_FirstWave
+	{
+		Vector2f(m_FirstStartPos),
+		Vector2f(m_FirstStartPos.x + 50, m_FirstStartPos.y),
+		Vector2f(m_FirstStartPos.x + 100, m_FirstStartPos.y),
+		Vector2f(m_FirstStartPos.x + 200, m_FirstStartPos.y),
+		Vector2f(m_FirstStartPos.x + 250, m_FirstStartPos.y),
+		Vector2f(m_FirstStartPos.x + 300, m_FirstStartPos.y),
+		Vector2f(m_FirstStartPos.x + 350, m_FirstStartPos.y)
+	};
+
+	//path
+	Path* m_Path;
+
+
+
+	// tower
 	std::vector<Tower*> m_Towers;
 
-	int m_CurrentWaypoint{ 1 };
+	float m_ShootTimer{ 0 };
+
+
+	//enemy
+	std::vector<Enemy*> m_Enemies;
+
 	float m_Speed{ 150.f };
 
-	Enemy* m_Enemy;
-	Path* m_Path;
+
+	//test
 };

@@ -16,3 +16,13 @@ void Path::Draw() const
 		utils::DrawLine(m_Waypoints[i - 1], m_Waypoints[i]);
 	}
 }
+
+Vector2f Path::GetNextPosition(int nextPos)
+{
+	return m_Waypoints.at(nextPos);
+}
+
+int Path::GetSize()
+{
+	return m_Waypoints.size();
+}

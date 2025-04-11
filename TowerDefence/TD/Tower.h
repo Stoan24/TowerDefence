@@ -9,18 +9,21 @@ public:
 	~Tower();
 
 	void Draw() const;
+	void Update(float elapsedSec);
 
 	void Buy(Vector2f mousePos);
-
-	Rectf GetRange();
+	//setters
 
 	void SetShooting(Enemy* enemy);
 	void SetActive();
 
 
-	void Update(float elapsedSec);
+	//getters
+
+	Rectf GetRange();
 
 	bool IsActive();
+	bool IsShooting();
 
 	bool HasEnemy();
 

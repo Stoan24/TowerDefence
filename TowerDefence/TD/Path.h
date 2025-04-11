@@ -8,6 +8,9 @@ public:
 	
 	void Draw() const;
 	
+	Vector2f GetNextPosition(int nextPos);
+
+	int GetSize();
 	
 
 private:

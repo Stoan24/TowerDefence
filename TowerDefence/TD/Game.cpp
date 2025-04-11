@@ -45,44 +45,35 @@ void Game::Update( float elapsedSec )
 	//{
 	//	std::cout << "Left and up arrow keys are down\n";
 	//}
-	
-	
-	if (m_CurrentWaypoint != 0)
+	for (int i{ 0 }; i < m_Enemies.size(); i++)
 	{
-		m_Enemy->Update(elapsedSec, m_Waypoints.at(m_CurrentWaypoint));
-
-		// look if the distance is small enough --> change waypoint
-		if (m_Enemy->GetDistance() < 0.01f)
-		{
-			m_CurrentWaypoint = (m_CurrentWaypoint + 1) % m_Waypoints.size();
-		}
+		m_Enemies.at(i)->Update(elapsedSec);
 	}
 
-	if (m_Enemy->IsDead())
-	{
-		m_Enemy = nullptr;
-	}
 
-	for (int i{ 0 }; i < m_Towers.size(); i++)
+	for (int tower{ 0 }; tower < m_Towers.size(); tower++)
 	{
-		if (m_Towers.at(i)->IsActive())
+		//loop towers
+		if (m_Towers.at(tower)->IsActive() || m_Towers.at(tower)->IsShooting())
 		{
-			if (m_Enemy != nullptr)
+			//loop enemies
+			for (int enemy{ 0 }; enemy < m_Enemies.size(); enemy++)
 			{
-				if (m_Enemy->IsInRange(m_Towers.at(i)->GetRange()))
+				//check if enemies are in range of the tower
+				if (m_Enemies.at(enemy)->IsInRange(m_Towers.at(tower)->GetRange()))
 				{
-					m_Towers.at(i)->SetShooting(m_Enemy);
+					if (!m_Towers.at(tower)->HasEnemy())
+					{
+						m_Towers.at(tower)->SetShooting(m_Enemies.at(enemy));
+					}
 				}
 				else
 				{
-					std::cout << "active" << "\n";
-					m_Towers.at(i)->SetActive();
+					m_Towers.at(tower)->SetActive();
 				}
 			}
-			
 		}
-
-		m_Towers.at(i)->Update(elapsedSec);
+		m_Towers.at(tower)->Update(elapsedSec);
 	}
 }
 
@@ -90,10 +81,19 @@ void Game::Draw( ) const
 {
 	ClearBackground( );
 
+	//path
 	m_Path->Draw();
 
-	m_Enemy->Draw();
+	//enemy
+	
+	//m_Enemy->Draw();
 
+	for (int i{ 0 }; i < m_Enemies.size(); i++)
+	{
+		m_Enemies.at(i)->Draw();
+	}
+
+	//tower
 	for (int i{ 0 }; i < m_Towers.size(); i++)
 	{
 		m_Towers.at(i)->Draw();
@@ -181,7 +181,11 @@ void Game::InitPath()
 
 void Game::InitEnemies()
 {
-	m_Enemy = new Enemy(m_StartPos, 10, m_Speed, 20);
+	for (int i{ 0 }; i < m_FirstWave.size(); i++)
+	{
+		m_Enemies.push_back( new Enemy(m_FirstWave.at(i), 10, m_Speed, 20, m_Path));
+	}
+	//m_Enemy = new Enemy(m_FirstStartPos, 10, m_Speed, 20);
 }
 
 void Game::InitTower()
