@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseGame.h"
 #include "vector"
+#include "list"
 
 class Texture;
 class Path;

@@ -45,35 +45,52 @@ void Game::Update( float elapsedSec )
 	//{
 	//	std::cout << "Left and up arrow keys are down\n";
 	//}
-	for (int i{ 0 }; i < m_Enemies.size(); i++)
+
+	Tower* tower;
+	Enemy* enemy;
+
+
+	for (int e{ 0 }; e < m_Enemies.size(); e++)
 	{
-		m_Enemies.at(i)->Update(elapsedSec);
+		m_Enemies.at(e)->Update(elapsedSec);
 	}
 
 
-	for (int tower{ 0 }; tower < m_Towers.size(); tower++)
+	for (int t{ 0 }; t < m_Towers.size(); t++)
 	{
+		tower = m_Towers.at(t);
+
 		//loop towers
-		if (m_Towers.at(tower)->IsActive() || m_Towers.at(tower)->IsShooting())
+		if (tower->IsActive() || tower->IsShooting())
 		{
 			//loop enemies
-			for (int enemy{ 0 }; enemy < m_Enemies.size(); enemy++)
+			for (int e{ 0 }; e < m_Enemies.size(); e++)
 			{
-				//check if enemies are in range of the tower
-				if (m_Enemies.at(enemy)->IsInRange(m_Towers.at(tower)->GetRange()))
+				enemy = m_Enemies.at(e);
+
+				//look if enemy is dead
+				if (enemy->IsDead())
 				{
-					if (!m_Towers.at(tower)->HasEnemy())
+					m_Enemies.erase(m_Enemies.begin() + e);
+					tower->SetActive();
+				}
+				//check if enemies are in range of the tower
+				if (enemy->IsInRange(tower->GetRange()))
+				{
+					//look if tower already has an enemy
+					if (!tower->HasEnemy())
 					{
-						m_Towers.at(tower)->SetShooting(m_Enemies.at(enemy));
+						tower->SetShooting(enemy);
+						break;
 					}
 				}
 				else
 				{
-					m_Towers.at(tower)->SetActive();
+					tower->SetActive();
 				}
 			}
 		}
-		m_Towers.at(tower)->Update(elapsedSec);
+		tower->Update(elapsedSec);
 	}
 }
 

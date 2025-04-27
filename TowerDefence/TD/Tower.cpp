@@ -42,7 +42,7 @@ void Tower::Draw() const
 
 	utils::DrawRect(m_Range);
 
-	if (m_IsBulletVisible && !m_pFocusEnemy->IsDead())
+	if (m_IsBulletVisible && m_pFocusEnemy != nullptr)
 	{
 		utils::SetColor(Color4f(1.f, 1.f, 0.f, 1.f));
 		utils::DrawLine(Vector2f(m_Position.left + m_Position.width/2, m_Position.bottom + m_Position.height/2), m_pFocusEnemy->GetPosition());
@@ -99,11 +99,11 @@ void Tower::SetActive()
 
 void Tower::Update(float elapsedSec)
 {
-	if (m_TowerState == State::Shooting)
+	if (m_TowerState == State::Shooting && m_pFocusEnemy != nullptr)
 	{
 		m_ShootTimer += elapsedSec;
 
-		if (m_ShootTimer >= 0.5f)
+		if (m_ShootTimer >= 0.25f)
 		{
 			m_pFocusEnemy->IsHit(m_Damage);
 			m_ShootTimer = 0;
@@ -116,7 +116,7 @@ void Tower::Update(float elapsedSec)
 			m_BulletTimer += elapsedSec;
 		}
 
-		if (m_BulletTimer >= 0.1f)
+		if (m_BulletTimer >= 0.2f)
 		{
 			m_IsBulletVisible = false;
 		}

@@ -51,7 +51,7 @@ void Enemy::Update(float elapsedSec)
 {	
 	m_NextPosition = m_Path->GetNextPosition(m_CurrentWaypoint);
 	
-	if (m_CurrentWaypoint != 0)
+	if (m_CurrentWaypoint != 0 && m_CurrentWaypoint != m_Path->GetSize() - 1)
 	{
 
 		// look if the distance is small enough --> change waypoint
