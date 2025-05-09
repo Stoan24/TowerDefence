@@ -4,18 +4,39 @@
 class Path
 {
 public:
-	Path(std::vector<Vector2f> waypoints);
+
+	enum class Edge {
+		Top,
+		Bottom,
+		Left,
+		Right
+	};
+
+
+	Path(const Rectf viewport);
 	
 	void Draw() const;
 	
 	Vector2f GetNextPosition(int nextPos);
 
 	int GetSize();
+
+	Path::Edge GetOppositeEdge(Edge edge);
+
+	Vector2f GetRandomPointOnEdge(Edge edge);
 	
+	std::vector<Vector2f> GenerateRandomPath();
+
+	Vector2f GetFirstPosition();
+
+	Edge GetEdge();
 
 private:
 
-	std::vector<Vector2f> m_Waypoints;
+	Edge m_Edge;
 
+	Rectf m_ViewPort;
+
+	std::vector<Vector2f> m_Waypoints;
 };
 

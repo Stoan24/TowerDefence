@@ -1,0 +1,60 @@
+﻿  pch.cpp
+  Bullet.cpp
+  Enemy.cpp
+C:\Users\stano\Github\TowerDefence\TowerDefence\TD\Enemy.cpp(26,41): warning C4244: 'argument': conversion from 'const int' to 'float', possible loss of data
+  (compiling source file '/Enemy.cpp')
+  
+C:\Users\stano\Github\TowerDefence\TowerDefence\TD\Enemy.cpp(26,33): warning C4244: 'argument': conversion from 'const int' to 'float', possible loss of data
+  (compiling source file '/Enemy.cpp')
+  
+  Game.cpp
+C:\Users\stano\Github\TowerDefence\TowerDefence\TD\Game.cpp(186,32): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  (compiling source file '/Game.cpp')
+  
+C:\Users\stano\Github\TowerDefence\TowerDefence\TD\Game.cpp(266,49): warning C4244: 'argument': conversion from 'const Sint32' to 'float', possible loss of data
+  (compiling source file '/Game.cpp')
+  
+C:\Users\stano\Github\TowerDefence\TowerDefence\TD\Game.cpp(266,44): warning C4244: 'argument': conversion from 'const Sint32' to 'float', possible loss of data
+  (compiling source file '/Game.cpp')
+  
+  InfoField.cpp
+  main.cpp
+  Path.cpp
+C:\Users\stano\Github\TowerDefence\TowerDefence\TD\Path.cpp(29,25): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file '/Path.cpp')
+  
+C:\Users\stano\Github\TowerDefence\TowerDefence\TD\Path.cpp(57,26): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  (compiling source file '/Path.cpp')
+  
+C:\Users\stano\Github\TowerDefence\TowerDefence\TD\Path.cpp(60,26): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  (compiling source file '/Path.cpp')
+  
+C:\Users\stano\Github\TowerDefence\TowerDefence\TD\Path.cpp(63,29): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  (compiling source file '/Path.cpp')
+  
+C:\Users\stano\Github\TowerDefence\TowerDefence\TD\Path.cpp(66,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  (compiling source file '/Path.cpp')
+  
+C:\Users\stano\Github\TowerDefence\TowerDefence\TD\Path.cpp(177,16): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  (compiling source file '/Path.cpp')
+  
+C:\Users\stano\Github\TowerDefence\TowerDefence\TD\Path.cpp(185,16): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  (compiling source file '/Path.cpp')
+  
+  Tower.cpp
+  Wave.cpp
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+  All 473 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  TD.vcxproj -> C:\Users\stano\Github\TowerDefence\TowerDefence\x64\Release\TD.exe
+  C:\Users\stano\Github\TowerDefence\TowerDefence\Libraries\SDLMain\SDL2-2.30.11\lib\x64\SDL2.dll
+  1 File(s) copied
+  C:\Users\stano\Github\TowerDefence\TowerDefence\Libraries\SDLImage\SDL2_image-2.8.4\lib\x64\SDL2_image.dll
+  1 File(s) copied
+  C:\Users\stano\Github\TowerDefence\TowerDefence\Libraries\SDLMixer\SDL2_mixer-2.8.0\lib\x64\SDL2_mixer.dll
+  1 File(s) copied
+  C:\Users\stano\Github\TowerDefence\TowerDefence\Libraries\SDLTtf\SDL2_ttf-2.24.0\lib\x64\SDL2_ttf.dll
+  1 File(s) copied
+  C:\Users\stano\Github\TowerDefence\TowerDefence\Resources\Map.png
+  1 File(s) copied

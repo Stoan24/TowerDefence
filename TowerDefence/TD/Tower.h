@@ -11,30 +11,31 @@ public:
 	void Draw() const;
 	void Update(float elapsedSec);
 
-	void Buy(Vector2f mousePos);
 	//setters
 
 	void SetShooting(Enemy* enemy);
-	void SetActive();
 
+	void RemoveEnemy();
+
+	void ChangeShootState(bool isShooting);
+
+	bool IsFocusEnemyInRange();
 
 	//getters
 
 	Rectf GetRange();
 
-	bool IsActive();
-	bool IsShooting();
-
 	bool HasEnemy();
 
 private:
 
-	enum State
+	enum class State
 	{
 		Inactive,
-		Active,
 		Shooting
 	};
+
+	bool m_IsShooting;
 
 	State m_TowerState;
 	Rectf m_Position;

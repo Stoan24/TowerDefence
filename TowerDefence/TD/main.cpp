@@ -12,7 +12,7 @@ int SDL_main(int argv, char** args)
 
 	StartHeapControl();
 
-	Game* pGame{ new Game{ Window{ "TowerDefence - Olivier, Stan - 1DAE29", 600.f , 500.f } } };
+	Game* pGame{ new Game{ Window{ "TowerDefence - Olivier, Stan - 1DAE29", 700.f , 500.f } } };
 	pGame->Run();
 	delete pGame;
 

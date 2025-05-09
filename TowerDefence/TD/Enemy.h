@@ -6,7 +6,7 @@ class Enemy
 {
 public:
 
-	Enemy(const Vector2f& position, int size, float speed, int lifePoints, Path* path);
+	Enemy(const Vector2f& position, Path* path, int type);
 	~Enemy();
 
 	void Draw() const;
@@ -24,6 +24,8 @@ public:
 
 	bool IsDead();
 
+	bool ReachedEnd();
+
 private:
 
 	Vector2f m_Position;
@@ -38,6 +40,6 @@ private:
 	Path* m_Path;
 	int m_CurrentWaypoint{ 1 };
 
-
+	bool m_ReachedEnd;
 };
 

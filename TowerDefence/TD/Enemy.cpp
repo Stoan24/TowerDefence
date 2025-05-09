@@ -3,14 +3,15 @@
 #include "utils.h"
 #include "Path.h"
 
-Enemy::Enemy(const Vector2f& position, int size, float speed, int lifePoints, Path* path)
+Enemy::Enemy(const Vector2f& position, Path* path, int type)
 	:m_Position{ position }
-	, m_Size{ size }
+	, m_Size{ 10 }
 	, m_NextPosition{ }
-	, m_Speed{ speed }
-	, m_MaxLifePoints{ lifePoints }
-	, m_LifePoints{ lifePoints }
+	, m_Speed{ 150 }
+	, m_MaxLifePoints{ 20 }
+	, m_LifePoints{ m_MaxLifePoints }
 	, m_Path{ path }
+	,m_ReachedEnd{false}
 {
 
 }
@@ -22,8 +23,6 @@ Enemy::~Enemy()
 
 void Enemy::Draw() const
 {
-	if (m_LifePoints <= 0) return;
-
 	utils::SetColor(Color4f(1.f, 0.f, 0.f, 1.f));
 	utils::FillEllipse(m_Position, m_Size, m_Size);
 
@@ -51,7 +50,7 @@ void Enemy::Update(float elapsedSec)
 {	
 	m_NextPosition = m_Path->GetNextPosition(m_CurrentWaypoint);
 	
-	if (m_CurrentWaypoint != 0 && m_CurrentWaypoint != m_Path->GetSize() - 1)
+	if (m_CurrentWaypoint != 0 && m_CurrentWaypoint != m_Path->GetSize())
 	{
 
 		// look if the distance is small enough --> change waypoint
@@ -59,7 +58,13 @@ void Enemy::Update(float elapsedSec)
 		{
 			m_CurrentWaypoint = (m_CurrentWaypoint + 1) % m_Path->GetSize();
 		}
+		m_ReachedEnd = false;
 	}
+	else if (m_CurrentWaypoint == 0)
+	{
+		m_ReachedEnd = true;
+	}
+	
 
 	Move(elapsedSec);
 }
@@ -86,6 +91,8 @@ void Enemy::Move(float elapsedSec)
 		m_Position.x += (x - m_Position.x) * ratio;
 		m_Position.y += (y - m_Position.y) * ratio;
 	}
+
+	
 }
 
 float Enemy::GetDistance()
@@ -111,4 +118,9 @@ void Enemy::IsHit(int damage)
 bool Enemy::IsDead()
 {
 	return m_LifePoints <= 0;
+}
+
+bool Enemy::ReachedEnd()
+{
+	return m_ReachedEnd;
 }
