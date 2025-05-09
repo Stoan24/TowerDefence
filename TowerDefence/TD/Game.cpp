@@ -30,7 +30,8 @@ void Game::Initialize( )
 	m_LivesText = new Texture("Lives: 20", "Minecraft.ttf", 25.f, Color4f(0.f, 0.f, 0.f, 1.f));
 	m_RoundText = new Texture("Press \'SPACE\' to start round", "Minecraft.ttf", 12.f, Color4f(0.f, 0.f, 0.f, 1.f));
 	m_TowerText = new Texture("Towers: 3", "Minecraft.ttf", 25.f, Color4f(0.f, 0.f, 0.f, 1.f));
-
+	m_PauzeText = new Texture("PAUSE", "Minecraft.ttf", 100.f, Color4f(1.f, 1.f, 1.f, 1.f));
+	m_StartText = new Texture("Press 'space' to start again", "Minecraft.ttf", 25.f, Color4f(1.f, 1.f, 1.f, 1.f));
 }
 
 void Game::Cleanup( )
@@ -61,8 +62,13 @@ void Game::Cleanup( )
 	delete m_RoundText;
 	m_RoundText = nullptr;
 
-	delete m_pFuturePath;
+	delete m_PauzeText;
+	m_PauzeText = nullptr;
 
+	delete m_StartText;
+	m_StartText = nullptr;
+
+	delete m_pFuturePath;
 	m_pFuturePath = nullptr;
 }
 
@@ -77,6 +83,12 @@ void Game::Update( float elapsedSec )
 	switch (m_GameState)
 	{
 	case Game::GameState::none:
+
+		if (pKeyboardStates[SDL_SCANCODE_SPACE])
+		{
+			SetState(GameState::mainloop);
+		}
+
 		break;
 	case Game::GameState::start:
 
@@ -88,6 +100,11 @@ void Game::Update( float elapsedSec )
 		}
 		break;
 	case Game::GameState::mainloop:
+
+		if (pKeyboardStates[SDL_SCANCODE_ESCAPE])
+		{
+			SetState(GameState::none);
+		}
 
 		for (int t{ 0 }; t < m_pTowers.size(); t++)
 		{
@@ -196,24 +213,8 @@ void Game::Update( float elapsedSec )
 void Game::Draw( ) const
 {
 	ClearBackground( );
+
 	
-	
-
-
-	switch (m_GameState)
-	{
-	case Game::GameState::none:
-		break;
-	case Game::GameState::start:
-
-		break;
-	case Game::GameState::mainloop:
-		break;
-	case Game::GameState::gameOver:
-		break;
-	default:
-		break;
-	}
 
 	//path
 	m_pCurrentPath->Draw();
@@ -241,6 +242,7 @@ void Game::Draw( ) const
 
 		utils::SetColor(Color4f(1.f, 1.f, 0.f, 0.5f));
 		utils::DrawRect(mouseX - 60.f, mouseY - 60.f, 120.f, 120.f);
+
 	}
 
 	for (int i{ 0 }; i < m_pTowers.size(); i++)
@@ -274,7 +276,42 @@ void Game::Draw( ) const
 	glScalef(0.3f, 0.3f, 1.f);
 
 	m_pFuturePath->Draw();
+
+
+	if (pressed && SDL_BUTTON(SDL_BUTTON_LEFT))
+	{
+		utils::SetColor(Color4f(0.f, 1.f, 0.f, 0.5f));
+		utils::FillRect(mouseX - 10.f, mouseY - 10.f, 20.f, 20.f);
+
+		utils::SetColor(Color4f(1.f, 1.f, 0.f, 0.5f));
+		utils::DrawRect(mouseX - 60.f, mouseY - 60.f, 120.f, 120.f);
+
+	}
+
+	for (int i{ 0 }; i < m_pTowers.size(); i++)
+	{
+		m_pTowers.at(i)->Draw();
+	}
+
+
 	glPopMatrix();
+
+
+	switch (m_GameState)
+	{
+	case Game::GameState::none:
+		m_PauzeText->Draw(Vector2f(100.f, GetViewPort().height / 2));
+		m_StartText->Draw(Vector2f(95.f, GetViewPort().height / 2 - 25.f));
+		break;
+	case Game::GameState::start:
+		break;
+	case Game::GameState::mainloop:
+		break;
+	case Game::GameState::gameOver:
+		break;
+	default:
+		break;
+	}
 
 }
 

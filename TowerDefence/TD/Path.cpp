@@ -31,7 +31,7 @@ int Path::GetSize()
 
 Vector2f Path::GetRandomPointOnEdge(Edge edge)
 {
-	return Vector2f(0, (rand() % (int) 5 + 1) * 100);
+	return Vector2f(0, (rand() % 4 + 1) * 100 );
 }
 
 std::vector<Vector2f> Path::GenerateRandomPath()

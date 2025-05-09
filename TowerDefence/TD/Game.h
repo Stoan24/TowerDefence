@@ -68,6 +68,9 @@ private:
 	Texture* m_RoundText;
 	Texture* m_TowerText;
 
+	Texture* m_PauzeText;
+	Texture* m_StartText;
+
 
 	bool m_ShowPlacement;
 
