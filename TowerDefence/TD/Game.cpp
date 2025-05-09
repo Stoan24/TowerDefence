@@ -379,52 +379,16 @@ void Game::SetState(GameState state)
 
 void Game::MakeNewWave()
 {
-	Vector2f positioner{ 1, 1 };
-	bool isHorizontal{ false };
 
 	int enemyAmount{ 4 * m_RoundNr };
-
-
-	switch (m_pCurrentPath->GetEdge())
-	{
-	case Path::Edge::Top:
-		positioner.y = 1;
-		break;
-
-	case Path::Edge::Bottom:
-		positioner.y = -1;
-		break;
-
-	case Path::Edge::Left:
-		positioner.x = -1;
-		isHorizontal = true;
-		break;
-
-	case Path::Edge::Right:
-		positioner.x = 1;
-		isHorizontal = true;
-		break;
-	default:
-		break;
-	}
 
 	Vector2f startPos{ m_pCurrentPath->GetFirstPosition() };
 	std::vector<Vector2f> m_FirstWave{};
 	
-	if (isHorizontal)
+	for (int i{ 1 }; i <= enemyAmount; i++)
 	{
-		for (int i{ 1 }; i <= enemyAmount; i++)
-		{
-			//													position									path		type
-			m_pEnemies.push_back( new Enemy(Vector2f( startPos.x + ((50.f*i) * positioner.x), startPos.y), m_pCurrentPath, 1));
-		}
+		//													position									path		type
+		m_pEnemies.push_back(new Enemy(Vector2f(startPos.x + (-50.f * i), startPos.y), m_pCurrentPath, 1));
 	}
-	else
-	{
-		for (int i{ 1 }; i < enemyAmount; i++)
-		{
-			//													position									path		type
-			m_pEnemies.push_back(new Enemy(Vector2f( startPos.x, startPos.y + ((50.f * i) * positioner.y)), m_pCurrentPath, 1));
-		}
-	}
+
 }

@@ -21,8 +21,6 @@ public:
 
 	int GetSize();
 
-	Path::Edge GetOppositeEdge(Edge edge);
-
 	Vector2f GetRandomPointOnEdge(Edge edge);
 	
 	std::vector<Vector2f> GenerateRandomPath();

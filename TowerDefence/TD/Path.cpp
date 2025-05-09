@@ -17,8 +17,6 @@ void Path::Draw() const
 	{
 		utils::DrawLine(m_Waypoints[i - 1], m_Waypoints[i]);
 	}
-
-
 }
 
 Vector2f Path::GetNextPosition(int nextPos)
@@ -31,29 +29,9 @@ int Path::GetSize()
 	return m_Waypoints.size();
 }
 
-Path::Edge Path::GetOppositeEdge(Edge edge)
-{
-	switch (edge)
-	{
-	case Edge::Top:
-		return Edge::Bottom;
-
-	case Edge::Bottom:
-		return Edge::Top;
-
-	case Edge::Left:
-		return Edge::Right;
-
-	case Edge::Right:
-		return Edge::Left;
-
-	}
-	return Edge::Top;
-}
-
 Vector2f Path::GetRandomPointOnEdge(Edge edge)
 {
-	return Vector2f(0, rand() % (int)m_ViewPort.height);
+	return Vector2f(0, (rand() % (int) 5 + 1) * 100);
 }
 
 std::vector<Vector2f> Path::GenerateRandomPath()
@@ -63,11 +41,10 @@ std::vector<Vector2f> Path::GenerateRandomPath()
 
 	//select edges
 	m_Edge = static_cast<Edge>(rand() % 4);
-	Edge endEdge = GetOppositeEdge(m_Edge);
 
 	//get a random position on the edge
 	Vector2f startPos = GetRandomPointOnEdge(m_Edge);
-	Vector2f endPos = GetRandomPointOnEdge(endEdge);
+	float endX = m_ViewPort.width;
 
 	std::vector<Vector2f> path;
 
@@ -77,6 +54,9 @@ std::vector<Vector2f> Path::GenerateRandomPath()
 
 	Vector2f currentPos = startPos;
 
+	path.push_back(currentPos);
+
+	currentPos = Vector2f(currentPos.x + stepSize, currentPos.y);
 	path.push_back(currentPos);
 
 	visitedPos.insert({ int(currentPos.x / stepSize), int(currentPos.y / stepSize) });
@@ -90,83 +70,23 @@ std::vector<Vector2f> Path::GenerateRandomPath()
 
 		if (rand() % 2 == 0)
 		{
-			if (endPos.x > currentPos.x)
+			if (rand() % 2 == 0)
 			{
-				nextPos.x += stepSize;
-			}
-			else if (endPos.x < currentPos.x)
-			{
-				nextPos.x -= stepSize;
+				nextPos.y += stepSize;
 			}
 			else
 			{
-				nextPos.x += 0;
+				nextPos.y -= stepSize;
 			}
 		}
 		else
 		{
-			if (endPos.y > currentPos.y)
-			{
-				nextPos.y += stepSize;
-			}
-			else if (endPos.y < currentPos.y)
-			{
-				nextPos.y -= stepSize;
-			}
-			else
-			{
-				nextPos.y += 0;
-			}
+			nextPos.x += stepSize;
 		}
-
-		
-		std::pair<int,int> gridPos = std::make_pair( int(nextPos.x / stepSize), int(nextPos.y / stepSize) );
-
-		int counter{ 0 };
-		do
-		{
-			counter++;
-
-			int direction = rand() % 4;
-
-			switch (direction)
-			{
-			case 0:
-				nextPos = Vector2f(currentPos.x + stepSize, currentPos.y);
-				break;
-
-			case 1:
-				nextPos = Vector2f(currentPos.x - stepSize, currentPos.y);
-				break;
-
-			case 2:
-				nextPos = Vector2f(currentPos.x, currentPos.y + stepSize);
-				break;
-
-			case 3:
-				nextPos = Vector2f(currentPos.x, currentPos.y - stepSize);
-				break;
-
-			default:
-				break;
-			}
-
-
-			gridPos = std::make_pair(int(nextPos.x / stepSize), int(nextPos.y / stepSize));
-
-		} while (visitedPos.count(gridPos) != 0 && counter < 5);
-
 
 		//clamp 50 from edge
 
-		if (nextPos.x < stepSize)
-		{
-			nextPos.x = stepSize;
-		}
-		else if (nextPos.x > m_ViewPort.width - stepSize)
-		{
-			nextPos.x = m_ViewPort.width - stepSize;
-		}
+
 		if (nextPos.y < stepSize)
 		{
 			nextPos.y = stepSize;
@@ -175,19 +95,59 @@ std::vector<Vector2f> Path::GenerateRandomPath()
 		{
 			nextPos.y = m_ViewPort.height - stepSize;
 		}
+		
+		std::pair<int,int> gridPos = std::make_pair( int(nextPos.x / stepSize), int(nextPos.y / stepSize) );
 
+		Vector2f tempPos{ nextPos };
+
+		while (visitedPos.count(gridPos) != 0)
+		{
+			nextPos = tempPos;
+
+
+			if (rand() % 2 == 0)
+			{
+				if (rand() % 2 == 0)
+				{
+					nextPos.y += stepSize;
+				}
+				else
+				{
+					nextPos.y -= stepSize;
+				}
+			}
+			else
+			{
+				nextPos.x += stepSize;
+			}
+
+			if (nextPos.y < stepSize)
+			{
+				nextPos.y = stepSize;
+			}
+			else if (nextPos.y > m_ViewPort.height - stepSize)
+			{
+				nextPos.y = m_ViewPort.height - stepSize;
+			}
+
+			gridPos = std::make_pair(int(nextPos.x / stepSize), int(nextPos.y / stepSize));
+
+			
+		}
+		
 
 		visitedPos.insert(gridPos);
 		path.push_back(nextPos);
 		currentPos = nextPos;
 
-		if (std::abs(currentPos.x - endPos.x) < stepSize && std::abs(currentPos.y - endPos.y) < stepSize)
+
+		if (currentPos.x == endX || currentPos.x > endX)
 		{
 			break;
 		}
 
 	}
-	path.push_back(endPos);
+	//path.push_back(Vector2f(currentPos.y, endX));
 
 	return path;
 }
